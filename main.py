@@ -70,13 +70,17 @@ class Game:
             row = 2
             col = 2
 
-        #if nothing is there then set character else nothing happens
-        if self.game_board[row][col] == None: 
-            if row != None and col != None:
-                if mouse_click[0] == True:
-                    self.game_board[row][col] = self.turn
-                    if self.turn == 'x': self.turn = 'o'
-                    elif self.turn == 'o': self.turn = 'x'
+        try:
+            #if nothing is there then set character else nothing happens
+            if self.game_board[row][col] == None: 
+                if row != None and col != None:
+                    if mouse_click[0] == True:
+                        self.game_board[row][col] = self.turn
+                        if self.turn == 'x': self.turn = 'o'
+                        elif self.turn == 'o': self.turn = 'x'
+        except TypeError:
+            #nothing has been placed so nothing should happen
+            return
 
 
 
@@ -245,7 +249,6 @@ class Game:
                     
 
     def main_loop(self):
-        i = 0
         while True:
             self.clock.tick(60) #sets framerate to 60fps
             for event in pygame.event.get():
@@ -260,8 +263,6 @@ class Game:
             mouse_keys = pygame.mouse.get_pressed()
             if mouse_keys[0] == True: #right or left click
                 self.user_click(mouse_keys)
-                i += 1
-                print(f"{i}: {self.turn}")
             
                 winner = self.check_win()
                 if self.winner != None or self.draw != None:
